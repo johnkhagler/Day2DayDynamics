@@ -822,7 +822,8 @@ Function GetAosDetails
 		Param($AosNumber,
 			$AosPort,
 			$AxVersion,
-			[bool]$IsRemote)
+			[bool]$IsRemote,
+			$aosName)
 		
 		#region ConvertAosPortToAosNumber
 		$origLocation = Get-Location
@@ -835,17 +836,22 @@ Function GetAosDetails
 		$pathToAosKey = "HKLM:\SYSTEM\CurrentControlSet\services\Dynamics Server\$AxVersion.0\$aosNumber"
 		$aosActiveConfig = Get-ItemProperty $pathToAosKey | Select -ExpandProperty Current
 		$currentProperties = Get-ItemProperty (Join-Path $pathToAosKey $aosActiveConfig)
+		$serverbindir = $currentProperties | Select -ExpandProperty bindir
+		$serverlogdir = $currentProperties | Select -ExpandProperty logdir
 		$dbserver = $currentProperties | Select -ExpandProperty dbserver
 		$dbname = $currentProperties | Select -ExpandProperty database
 		
 		$data = @{
 			AosComputerName = $Env:COMPUTERNAME
 			AosNumber = $aosNumber
+			AosName = $aosName
 			AosPort = $aosPort
 			AosServiceName = ("AOS$($AxVersion)0`${0:D2}" -f $aosNumber)
 			DatabaseServer = $dbserver
 			Database = $dbname
 			IsAosRemote = $isRemote
+			ServerBinDir = $serverbindir
+			ServerLogDir = $serverlogdir
 		}
 		
 		if ($AxVersion -le $LastAxWithAppl)
@@ -864,7 +870,7 @@ Function GetAosDetails
 		{
 			$Credential = $global:Credential = Get-Credential	
 		}
-		Invoke-Command -ComputerName $aosComputerName -Credential $Credential -ScriptBlock $scriptBlock -ArgumentList $aosNumber,$aosPort,$axVersion,$isRemote
+		Invoke-Command -ComputerName $aosComputerName -Credential $Credential -ScriptBlock $scriptBlock -ArgumentList $aosNumber,$aosPort,$axVersion,$isRemote,$aosName
 	}
 	else
 	{
