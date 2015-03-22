@@ -40,7 +40,7 @@ param(
 
     if (Test-Path $VariablePath)
     {
-        .$VariablePath
+        ."$VariablePath"
     } 
 
     $AXConfig = $AXConfig = Get-AXConfig -ConfigPath $ConfigPath -AxVersion $AxVersion -IncludeServer
