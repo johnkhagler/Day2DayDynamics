@@ -17,7 +17,7 @@
 #.Parameter VariablePath
 # The file location of a script to default parameters used.
 #.Parameter Workers
-#  The number of processes running the build.  Default = 4.
+#  The number of processes running the build.
 #.Parameter AXVersion
 #  The AX Version you are running the function against.  The function is only valid for AX 2012 R2 CU7 and above.
 ######################################################################################################################################################
