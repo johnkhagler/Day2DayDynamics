@@ -57,35 +57,7 @@ param(
         $XMLFile = Join-Path $env:TEMP ('{0}.xml' -f ($ax.AosComputerName + '_CILAutorun'))           
         New-Item $XmlFile -type file -force -value $XML
 
-        Write-Host ('Starting AX autorun process - CIL Compile : {0}' -f (Get-Date)) -ForegroundColor Black -BackgroundColor White
-        $StartTime = Get-Date
-
-        $ArgumentList = '"{0}" -development -internal=noModalBoxes -StartupCmd=autorun_{1}"' -f $ax.FilePath, $XmlFile
-        $axProcess = Start-Process ax32.exe -WorkingDirectory $ax.ClientBinDir -PassThru -WindowStyle minimized -ArgumentList $ArgumentList -OutVariable out
-
-        if ($axProcess.WaitForExit(60000*$Timeout) -eq $false)
-        {
-            if (($SMTPServer -ne '') -and ($MailMsg.From -ne '') -and ($MailMsg.To -ne '') -and ($MailMsg.Subject -ne '') -and ($MailMsg.Body -ne '') -and ($MailMsg.Priority -ne ''))
-            {
-                $MailMsg.Subject = ('IL compile process failed on {0} : {1}' -f $ax.AosComputerName, (Get-Date))
-                $MailMsg.Body = ('IL compile process did not complete in {0} minutes.' -f $Timeout)
-                Send-Email -SMTPServer $SMTPServer -From $MailMsg.From -To $MailMsg.To -Subject $MailMsg.Subject -Body $MailMsg.Body -Priority $MailMsg.Priority -FileLocation $LogFile
-            }
-            
-            $axProcess.Kill()
-            Throw ('Error: IL compile process on {0} did not complete within {1} minutes' -f $ax.AosComputerName, $Timeout)
-        }
-        else
-        {
-            if (($SMTPServer -ne '') -and ($MailMsg.From -ne '') -and ($MailMsg.To -ne '') -and ($MailMsg.Subject -ne '') -and ($MailMsg.Body -ne '') -and ($MailMsg.Priority -ne ''))
-            {
-                $MailMsg.Subject = ('{0} - IL compile finished: {1} - {2}' -f $ax.AosComputerName, $StartTime, (Get-Date))
-                $MailMsg.Body = 'See attached.'
-                Send-Email -SMTPServer $SMTPServer -From $MailMsg.From -To $MailMsg.To -Subject $MailMsg.Subject -Body $MailMsg.Body -Priority $MailMsg.Priority -FileLocation $LogFile
-            }
-
-            Write-Host ('AX autorun process complete - CIL Compile : {0}' -f (Get-Date)) -ForegroundColor Black -BackgroundColor White
-        }
+        Start-AXAutoRun -Ax $ax -XMLFile $XMLFile -LogFile $LogFile -Process 'IL compile' -Timeout $Timeout -SMTPServer $SMTPServer -MailMsg $MailMsg
     }
     catch 
 	{

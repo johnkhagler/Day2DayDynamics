@@ -1,17 +1,15 @@
-﻿function Sync-AXDB{
+﻿function Compile-AXAOT{
 ###########################################################################################################################################################
 #.Synopsis
-#  Synchronizes the DataDictionary for a specific environment.
+#  Compiles the AOT for a specific environment.
 #.Description
-#  Synchronizes the DataDictionary for a specific environment.
+#  Compiles the AOT for a specific environment.
 #.Example
-#  Sync-AXDB -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -LogFile 'C:\TestLog.log' -Timeout 90
+#  Compile-AXAOT -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -Timeout 300
 #.Example
-#  Sync-AXDB -VariablePath 'C:\Powershell\D2D_PSFunctionVariables.ps1'
+#  Compile-AXAOT -VariablePath 'C:\Powershell\D2D_PSFunctionVariables.ps1'
 #.Parameter ConfigPath
 #  The configuration file for the AX instance.
-#.Parameter LogFile
-#  The path to the log file.
 #.Parameter Timeout
 #  The amount of time in minutes before the process times out.
 #.Parameter SMTPServer
@@ -21,16 +19,14 @@
 #.Parameter AXVersion
 #  The AX Version you are running the function against.
 #.Parameter VariablePath
-# The file location of a script to default parameters used
+# The file location of a script to default parameters used.
 ###########################################################################################################################################################
 [CmdletBinding()]
 param(
     [Parameter(ValueFromPipeline = $True)]
     [String]$ConfigPath,
     [Parameter(ValueFromPipeline = $True)]
-    [String]$LogFile = (Join-Path $env:TEMP 'DBSync.log'),
-    [Parameter(ValueFromPipeline = $True)]
-    [Int]$Timeout = 120,
+    [Int]$Timeout = 360,
     [Parameter(ValueFromPipeline = $True)] 
     [String]$SMTPServer,
     [Parameter(ValueFromPipeline = $True)]
@@ -39,9 +35,10 @@ param(
     [Int]$AXVersion = 6,
     [Parameter(ValueFromPipeline = $True)]
     [String]$VariablePath = '?'
+
 )
     Import-Module DynamicsAXCommunity -DisableNameChecking
-
+        
     if (Test-Path $VariablePath)
     {
         ."$VariablePath"
@@ -51,12 +48,14 @@ param(
     {   
         $ax = Get-AXConfig -ConfigPath $ConfigPath -AxVersion $AXVersion -IncludeServer
 
-        $XML = Get-AXAutoRunXML -Command 'Synchronize' -ExitWhenDone -LogFile $LogFile
+        $XML = Get-AXAutoRunXML -Command 'CompileApplication' -ExitWhenDone
 
-        $XMLFile = Join-Path $env:TEMP ('{0}.xml' -f ($ax.AosComputerName + '_DBSync'))           
+        $XMLFile = Join-Path $env:TEMP ('{0}.xml' -f ($ax.AosComputerName + '_CompileApplication'))           
         New-Item $XmlFile -type file -force -value $XML
 
-        Start-AXAutoRun -Ax $ax -XMLFile $XMLFile -LogFile $LogFile -Process 'Synchronize database' -Timeout $Timeout -SMTPServer $SMTPServer -MailMsg $MailMsg
+        $LogFile = ('C:\Users\{0}\Microsoft\Dynamics Ax\Log\AxCompileAll.html' -f $env:USERNAME)
+        
+        Start-AXAutoRun -Ax $ax -XMLFile $XMLFile -LogFile $LogFile -Process 'AOT compile' -Timeout $Timeout -SMTPServer $SMTPServer -MailMsg $MailMsg
     }
     catch 
 	{
