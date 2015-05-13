@@ -18,3 +18,15 @@
 
 #  Compile-AXAOT -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -Timeout 300
 ."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Compile-AXAOT.ps1"
+
+#  Clean-Folder -FolderPaths $env:LOCALAPPDATA -FilePatterns @('ax_*.auc', 'ax*.kti')
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Clean-Folder.ps1"
+
+#  Clean-Folders -FolderPaths 'C:\Users' -FolderPatterns '*' -Drilldown -SubFolderPaths 'AppData' -SubFolderPatterns 'Local' -FilePatterns @('ax_*.auc', 'ax*.kti')
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Clean-Folders.ps1"
+
+#  Clean-AXArtifacts -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -AllUsers -CleanServer
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Clean-AXArtifacts.ps1"
+
+#  Import-AXXPO -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -LogFile 'C:\TestLog.log' -Timeout 10 -ImportFile 'C:\D2DModel_hotfix.xpo'
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Import-AXXPO.ps1"
