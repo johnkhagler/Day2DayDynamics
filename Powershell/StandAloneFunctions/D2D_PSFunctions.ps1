@@ -30,3 +30,6 @@
 
 #  Import-AXXPO -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -LogFile 'C:\TestLog.log' -Timeout 10 -ImportFile 'C:\D2DModel_hotfix.xpo'
 ."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Import-AXXPO.ps1"
+
+#  Import-AXLabelFile -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -LableFile 'C:\axD2Den-us.ald'
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Import-AXLabelFile.ps1"

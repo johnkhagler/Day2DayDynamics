@@ -8,6 +8,8 @@
 #  Start-AXAutoRun -Ax $ax -XMLFile 'C:\AOTCompile.xml' -LogFile 'C:\Test.log' -Process 'AOT compile' -Timeout 480 -SMTPServer 'smtp.d2dynamics.com -MailMsg $MailMsg
 #.Parameter Ax
 #  The PSObject returned from Get-AXConfig holding AX environment parameters.
+#.Parameter Model
+#  The Model to work in, in AX.
 #.Parameter XMLFile
 #  The path to the AutoRun XML file.
 #.Parameter LogFile
@@ -27,6 +29,8 @@ param(
     ValueFromPipeline = $True)]
     [ValidateNotNullOrEmpty()]
     [PSObject]$Ax,
+    [Parameter(ValueFromPipeline = $True)]
+    [String]$Model,
     [Parameter(Mandatory=$True,
     ValueFromPipeline = $True)]
     [ValidateNotNullOrEmpty()]
@@ -53,7 +57,16 @@ param(
 
     try
     {
-        $ArgumentList = '"{0}" -development -internal=noModalBoxes -StartupCmd=autorun_{1}"' -f $Ax.FilePath, $XmlFile
+        if ($Model)
+        {
+            $Model = '"-model={0}"' -f $Model
+        }
+        else
+        {
+            $Model = ''
+        }
+
+        $ArgumentList = '"{0}" -development -internal=noModalBoxes "-StartupCmd=autorun_{1}" {2}' -f $Ax.FilePath, $XmlFile, $Model
         $axProcess = Start-Process ax32.exe -WorkingDirectory $ax.ClientBinDir -PassThru -WindowStyle minimized -ArgumentList $ArgumentList -OutVariable out
 
         if ($axProcess.WaitForExit(60000*$Timeout) -eq $false)
