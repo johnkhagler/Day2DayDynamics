@@ -16,6 +16,8 @@
 #  The amount of time in minutes before the process times out.
 #.Parameter ImportFile
 #  The path to the .xpo file to import.
+#.Parameter Model
+#  The Model to work in, in AX.
 #.Parameter SMTPServer
 #  The SMTP server used to send the email.
 #.Parameter MailMsg
@@ -35,6 +37,8 @@ param(
     [Int]$Timeout = 20,
     [Parameter(ValueFromPipeline = $True)]
     [String]$ImportFile = '?',
+    [Parameter(ValueFromPipeline = $True)]
+    [String]$Model,
     [Parameter(ValueFromPipeline = $True)] 
     [String]$SMTPServer,
     [Parameter(ValueFromPipeline = $True)]
@@ -67,7 +71,7 @@ param(
         $XMLFile = Join-Path $env:TEMP ('{0}.xml' -f ($ax.AosComputerName + '_XPOImport'))           
         New-Item $XmlFile -type file -force -value $XML
 
-        Start-AXAutoRun -Ax $ax -XMLFile $XMLFile -LogFile $LogFile -Process 'XPO import' -Timeout $Timeout -SMTPServer $SMTPServer -MailMsg $MailMsg
+        Start-AXAutoRun -Ax $ax -XMLFile $XMLFile -LogFile $LogFile -Process 'XPO import' -Timeout $Timeout -SMTPServer $SMTPServer -MailMsg $MailMsg -Model $Model
     }
     catch 
 	{
