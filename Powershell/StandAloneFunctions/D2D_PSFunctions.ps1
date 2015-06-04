@@ -33,3 +33,6 @@
 
 #  Import-AXLabelFile -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -LableFile 'C:\axD2Den-us.ald'
 ."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Import-AXLabelFile.ps1"
+
+#  Sync-AXTFSWorkingFolder -WorkingFolder 'C:\TFS\AX2012\D2D_AX_REL'
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Sync-AXTFSWorkingFolder.ps1"
