@@ -36,3 +36,6 @@
 
 #  Sync-AXTFSWorkingFolder -WorkingFolder 'C:\TFS\AX2012\D2D_AX_REL'
 ."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Sync-AXTFSWorkingFolder.ps1"
+
+#  Restore-AXDatabase -AXDBName 'D2D_AX_BLD' -BackupFilePath 'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Backup\D2D_AX_BLD\D2D_AX_BLD_CU7_EmptyBLD.bak'
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Restore-AXDatabase.ps1"
