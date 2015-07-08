@@ -36,7 +36,7 @@ param(
     [Parameter(ValueFromPipeline = $True)]
     [Int]$Timeout = 20,
     [Parameter(ValueFromPipeline = $True)]
-    [String]$ImportFile = '?',
+    [String]$ImportFile = '',
     [Parameter(ValueFromPipeline = $True)]
     [String]$Model,
     [Parameter(ValueFromPipeline = $True)] 
@@ -46,16 +46,16 @@ param(
     [Parameter(ValueFromPipeline = $True)]
     [Int]$AXVersion = 6,
     [Parameter(ValueFromPipeline = $True)]
-    [String]$VariablePath = '?'
+    [String]$VariablePath = ''
 )
     Import-Module DynamicsAXCommunity -DisableNameChecking
         
-    if (Test-Path $VariablePath)
+    if ($VariablePath -ne '' -and (Test-Path $VariablePath))
     {
         ."$VariablePath"
     }
 
-    if (!(Test-Path $ImportFile))
+    if ($ImportFile -ne '' -and !(Test-Path $ImportFile))
     {
         Throw 'Error: Unable to find import file'
     }
