@@ -23,9 +23,9 @@ param(
     [String]$Label = '',
     [Switch]$SetLabel,
     [String]$LabelScope = '',
-    [String]$VariablePath = '?'
+    [String]$VariablePath = ''
 )
-    if (Test-Path $VariablePath)
+    if ($VariablePath -ne '' -and (Test-Path $VariablePath))
     {
         ."$VariablePath"
     }

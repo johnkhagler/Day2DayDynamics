@@ -38,11 +38,11 @@ param(
     [Parameter(ValueFromPipeline = $True)]
     [Int]$AXVersion = 6,
     [Parameter(ValueFromPipeline = $True)]
-    [String]$VariablePath = '?'
+    [String]$VariablePath = ''
 )
     Import-Module DynamicsAXCommunity -DisableNameChecking
 
-    if (Test-Path $VariablePath)
+    if ($VariablePath -ne '' -and (Test-Path $VariablePath))
     {
         ."$VariablePath"
     }

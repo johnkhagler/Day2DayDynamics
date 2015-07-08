@@ -10,82 +10,112 @@
 #  Start-AXBuildCompile -VariablePath 'C:\Powershell\D2D_PSFunctionVariables.ps1'
 #.Parameter ConfigPath
 #  A configuration for the AX environment to be compiled.  Must be run on the AOS server.
+#.Parameter AXVersion
+#  The AX Version you are running the function against.  Defaults to 6.  The function is only valid for AX 2012 R2 CU7 and above.
+#.Parameter LogPath
+#  Allows users to override the AxBuild.exe default log location.
+#.Parameter NoCleanup
+#  Stops AxBuild.exe from cleaning up temporary files.
+#.Parameter Workers
+#  The number of processes running the build.
+#.Parameter StopAOS
+#  Used to stop the AOS before running the compile.  The AOS is restarted if it was stopped by this function.
 #.Parameter SMTPServer
 #  The SMTP server used to send the email.
 #.Parameter MailMsg
 #  A Net.Mail.MailMsg object used for the email information.
 #.Parameter VariablePath
 # The file location of a script to default parameters used.
-#.Parameter Workers
-#  The number of processes running the build.
-#.Parameter AXVersion
-#  The AX Version you are running the function against.  The function is only valid for AX 2012 R2 CU7 and above.
 ######################################################################################################################################################
 [CmdletBinding()]
 param(
     [Parameter(ValueFromPipeline = $True)]
     [String]$ConfigPath,
+    [Parameter(ValueFromPipeline = $True)]
+    [Int]$AXVersion = 6,
+    [Parameter(ValueFromPipeline = $True)]
+    [String]$LogPath = '',
+    [Parameter(ValueFromPipeline = $True)]
+    [Switch]$NoCleanup,
+    [Parameter(ValueFromPipeline = $True)]
+    [Int]$Workers,
+    [Parameter(ValueFromPipeline = $True)]
+    [Switch]$StopAOS,
     [Parameter(ValueFromPipeline = $True)] 
     [String]$SMTPServer,
     [Parameter(ValueFromPipeline = $True)]
     [Net.Mail.MailMessage]$MailMsg,
     [Parameter(ValueFromPipeline = $True)]
-    [String]$VariablePath = '?',
-    [Parameter(ValueFromPipeline = $True)]
-    [Int]$Workers,
-    [Parameter(ValueFromPipeline = $True)]
-    [Int]$AXVersion
+    [String]$VariablePath = ''
 )
-    Import-Module DynamicsAXCommunity -DisableNameChecking
+    $StartTime = Get-Date
+    Write-Host ('Starting AXBuild compile. {0} : {1}' -f $ax.AosComputerName, $StartTime) -ForegroundColor Black -BackgroundColor White
 
-    if (Test-Path $VariablePath)
+    if ($VariablePath -ne '' -and (Test-Path $VariablePath))
     {
         ."$VariablePath"
     } 
 
-    $AXConfig = $AXConfig = Get-AXConfig -ConfigPath $ConfigPath -AxVersion $AxVersion -IncludeServer
-
-    $LogPath = $AXConfig.ServerLogDir
-    $CurrentDir = Get-Location
-
-    if ($Workers -ne 0)
-    {
-        $WorkersParam = '/workers={0}' -f $Workers
-    }
-    else
-    {
-        $WorkersParam = ''
-    }
-
-    $BAT =
-@'
-cd "{0}"
-axbuild.exe xppcompileall /s={1} /altbin="{2}" /log="{3}" {4}
-cd "{5}"
-'@ -f $AXConfig.ServerBinDir, $AXConfig.AosNumber, $AXConfig.ClientBinDir, $LogPath, $WorkersParam, $CurrentDir
-
     try
     {
-        $BATFile = Join-Path $env:TEMP 'AXBuild.bat'           
-        New-Item $BATFile -type file -force -value $BAT
+        [Boolean]$AOSStopped = $False
 
-        Write-Host ('Starting AXBuild.exe process - {0} : {1}' -f $Process, (Get-Date)) -ForegroundColor Black -BackgroundColor White
-        $StartTime = Get-Date
+        $AXConfig = $AXConfig = Get-AXConfig -ConfigPath $ConfigPath -AxVersion $AxVersion -IncludeServer
 
-        .$BATFile
+        $AXService = Get-Service -Name $AXConfig.AosServiceName
+
+        if ($StopAOS -and $AXService.Status -eq "Running")
+        {
+            Write-Host ('Stopping AOS {0} - {1}: {2}' -f $AXConfig.AosComputerName, $AXConfig.AosServiceName, (Get-Date)) -ForegroundColor Red -BackgroundColor White
+            Stop-AXAOS -ConfigPath $ConfigPath
+            $AOSStopped = $True
+        }
+
+        $AxBuild = Join-Path $AXConfig.AosBinDir 'AxBuild.exe'
+        $Compiler = Join-Path $AXConfig.AosBinDir 'ax32serv.exe'
+
+        if ($LogPath -eq '')
+        {
+            $LogPath = $AXConfig.AosLogDir
+        } 
+
+        $Command = '& "{0}" "xppcompileall" /a="{1}" /c="{2}" /s={3} /l="{4}"' -f $AxBuild, $AXConfig.ClientBinDir, $Compiler, $AXConfig.AosNumber, $LogPath
+
+        if ($NoCleanup)
+        {
+            $Command = $Command + ' /n'
+        }
+
+        if ($PSBoundParameters['Verbose'])
+        {
+            $Command = $Command + ' /v'
+        }
+
+        if ($Workers -gt 0)
+        {
+            $Command = $Command + ' /w={0}' -f $Workers
+        }
+
+        Invoke-Expression $Command
+
+        $AXService = Get-Service -Name $AXConfig.AosServiceName
+
+        if ($AXService.Status -eq "Stopped" -and $AOSStopped)
+        {
+            Write-Host ('Starting AOS {0} - {1}: {2}' -f $AXConfig.AosComputerName, $AXConfig.AosServiceName, (Get-Date)) -ForegroundColor Red -BackgroundColor White
+            Start-AXAOS -ConfigPath $ConfigPath
+        }
 
         $LogFile = Join-Path $LogPath 'AxCompileAll.html'
             
         if (($SMTPServer -ne '') -and ($MailMsg.From -ne '') -and ($MailMsg.To -ne '') -and ($MailMsg.Subject -ne '') -and ($MailMsg.Body -ne '') -and ($MailMsg.Priority -ne ''))
         {
-            $MailMsg.Subject = ('{0} - AXBuild.exe {1}: {2} - {3}' -f $ax.AosComputerName, $Process, $StartTime, (Get-Date))
+            $MailMsg.Subject = ('AXBuild.exe complete. {0}: {1} - {2}' -f $AXConfig.AosComputerName, $StartTime, (Get-Date))
             $MailMsg.Body = 'See attached.'
             Send-Email -SMTPServer $SMTPServer -From $MailMsg.From -To $MailMsg.To -Subject $MailMsg.Subject -Body $MailMsg.Body -Priority $MailMsg.Priority -FileLocation $LogFile
         }
-        else
-        {
-            Write-Host ('{0} - AXBuild.exe {1}: {2} - {3}.  Missing email parameters.  Email not sent.' -f $ax.AosComputerName, $Process, $StartTime, (Get-Date)) -ForegroundColor Red -BackgroundColor White   
-        }
+        
+       Write-Host ('AXBuild compile complete. {0} : {1} - {2}' -f $AXConfig.AosComputerName, $StartTime, (Get-Date)) -ForegroundColor Black -BackgroundColor White   
     }
     catch 
 	{

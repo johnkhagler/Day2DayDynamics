@@ -25,11 +25,6 @@ param(
     [Switch]$AllUsers
 )
 
-    if (Test-Path $VariablePath)
-    {
-        ."$VariablePath"
-    }
-
     [Boolean]$AOSStopped = $False
 
     if ($CleanServer)
@@ -55,15 +50,15 @@ param(
         }
         
         Write-Host ('Cleaning server label artifacts {0} - {1}: {2}' -f $AXConfig.AosComputerName, $AXConfig.AosServiceName, (Get-Date)) -ForegroundColor Red -BackgroundColor White
-        $CleanPath = Join-Path $AXConfig.ServerBinDir 'Application\Appl\Standard'
+        $CleanPath = Join-Path $AXConfig.AosBinDir 'Application\Appl\Standard'
         Clean-Folder -FolderPath $CleanPath -FilePatterns "ax*.al?"
 
         Write-Host ('Cleaning server XppIL artifacts {0} - {1}: {2}' -f $AXConfig.AosComputerName, $AXConfig.AosServiceName, (Get-Date)) -ForegroundColor Red -BackgroundColor White
-        $CleanPath = Join-Path $AXConfig.ServerBinDir 'XppIL'
+        $CleanPath = Join-Path $AXConfig.AosBinDir 'XppIL'
         Clean-Folder -FolderPath $CleanPath -FilePatterns "*"
 
         Write-Host ('Cleaning server VSAssemblies artifacts {0} - {1}: {2}' -f $AXConfig.AosComputerName, $AXConfig.AosServiceName, (Get-Date)) -ForegroundColor Red -BackgroundColor White
-        $CleanPath = Join-Path $AXConfig.ServerBinDir 'VSAssemblies'
+        $CleanPath = Join-Path $AXConfig.AosBinDir 'VSAssemblies'
         Clean-Folder -FolderPath $CleanPath -FilePatterns "*"
 
         $AXService = Get-Service -Name $AXConfig.AosServiceName
