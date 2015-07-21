@@ -60,7 +60,7 @@ param(
     {
         [Boolean]$AOSStopped = $False
 
-        $AXConfig = $AXConfig = Get-AXConfig -ConfigPath $ConfigPath -AxVersion $AxVersion -IncludeServer
+        $AXConfig = Get-AXConfig -ConfigPath $ConfigPath -AxVersion $AxVersion -IncludeServer
 
         $AXService = Get-Service -Name $AXConfig.AosServiceName
 
