@@ -42,3 +42,6 @@
 
 #  Combine-AXXPO -XpoDir 'C:\TFS\AX2012\D2D_AX_REL\D2DModel' -CombinedXpoFile 'C:\Builds\1.0.0.1\setup\D2DModelCombined.xpo'
 ."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Combine-AXXPO.ps1"
+
+#  Start-AXMSBuildImport -VariablePath 'C:\Powershell\D2D_PSFunctionVariables.ps1' -Layer 'var' -LayerCode 'uerl3958738493' -ModelName 'D2D Model'
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Start-AXMSBuildImport.ps1"
