@@ -1,0 +1,35 @@
+<Project DefaultTargets="Import" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask AssemblyName="Microsoft.Dynamics.Framework.Design.VSInteractions, Version=6.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" TaskName="ImportAnalysisProjectsTask" />
+  <UsingTask AssemblyName="Microsoft.Dynamics.Framework.Design.BuildTasks, Version=6.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" TaskName="SetAXConfiguration" />
+
+  <ItemGroup>
+    <ProjectFiles Include="$(srcFolder)\Visual Studio Projects\**\**\*proj"
+                  Exclude="$(srcFolder)\Visual Studio Projects\Analysis Services Projects\**\*proj"/>
+
+    <AnalysisProjects Include="$(srcFolder)\Visual Studio Projects\Analysis Services Projects\**\*proj"/>
+  </ItemGroup>
+
+  <Target
+      Name="SetAXConfigurationTarget" >
+    <Message Text="Importing to model: $(ModelName) $(ModelPublisher)"/>
+    <Message Text="Importing to layer: $(axLayer)"/>
+    <SetAXConfiguration AXConfig="$(AXConfig)" Aol="$(axLayer)" AolCode="$(axAolCode)" ModelName="$(ModelName)" ModelPublisher="$(ModelPublisher)" SuspendProjectEvents="true"/>
+  </Target>
+
+  <Target Name="ListProjects">
+    <Message Text="List of Analysis projects to be imported:"/>
+    <Message Text="%(AnalysisProjects.Filename)"/>
+    <Message Text="List of MSBuild projects to be imported:"/>
+    <Message Text="%(ProjectFiles.Filename)"/>
+  </Target>
+
+  <Target Name="Import" DependsOnTargets="ListProjects;SetAXConfigurationTarget">
+    <Message Text="Importing with configuration: $(AXConfig)"/>
+    <Message Text="Importing Analysis projects"/>
+    <ImportAnalysisProjectsTask ProjectFileNames="@(AnalysisProjects)"/>
+    <Message Text="Importing MSBuild projects"/>
+    <MSBuild
+      Projects="@(ProjectFiles)"
+      Targets="ImportToAOT"/>
+  </Target>
+</Project>
