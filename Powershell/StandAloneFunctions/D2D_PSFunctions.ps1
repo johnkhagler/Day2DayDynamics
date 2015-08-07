@@ -45,3 +45,6 @@
 
 #  Start-AXMSBuildImport -VariablePath 'C:\Powershell\D2D_PSFunctionVariables.ps1' -Layer 'var' -LayerCode 'uerl3958738493' -ModelName 'D2D Model'
 ."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Start-AXMSBuildImport.ps1"
+
+#  Compile-AXXppNode -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -Node 'Visual Studio Projects\Dynamics AX Model Projects'
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Compile-AXXppNode.ps1"
