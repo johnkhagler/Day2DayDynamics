@@ -48,3 +48,6 @@
 
 #  Compile-AXXppNode -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -Node 'Visual Studio Projects\Dynamics AX Model Projects'
 ."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Compile-AXXppNode.ps1"
+
+#  Import-AXVSProject -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -$VSProject 'C:\Test\VSProject.dwproj' -LogFile 'C:\TestLog.log' -Timeout 5
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Import-AXVSProject.ps1"
