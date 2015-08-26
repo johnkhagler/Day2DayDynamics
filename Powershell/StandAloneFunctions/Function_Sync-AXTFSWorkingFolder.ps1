@@ -17,14 +17,17 @@
 #.Parameter VariablePath
 # The file location of a script to default parameters used.
 ################################################################################################################################################################################
-[CmdletBinding()]
-param(
-    [String]$WorkingFolder,
-    [String]$Label = '',
-    [Switch]$SetLabel,
-    [String]$LabelScope = '',
-    [String]$VariablePath = ''
-)
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [String]$WorkingFolder,
+        [String]$Label = '',
+        [Switch]$SetLabel,
+        [String]$LabelScope = '',
+        [String]$VariablePath = ''
+    )
+    #endregion
+
     if ($VariablePath -ne '' -and (Test-Path $VariablePath))
     {
         ."$VariablePath"

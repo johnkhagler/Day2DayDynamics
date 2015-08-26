@@ -23,35 +23,38 @@
 #.Parameter MailMsg
 #  A Net.Mail.MailMsg object used for the email information.
 ###########################################################################################################################################################
-[CmdletBinding()]
-param(
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [PSObject]$Ax,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$Model,
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$XMLFile,
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$LogFile,
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()] 
-    [String]$Process,
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [Int]$Timeout,    
-    [Parameter(ValueFromPipeline = $True)] 
-    [String]$SMTPServer,
-    [Parameter(ValueFromPipeline = $True)]
-    [Net.Mail.MailMessage]$MailMsg
-)
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [PSObject]$Ax,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$Model,
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$XMLFile,
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$LogFile,
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()] 
+        [String]$Process,
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [Int]$Timeout,    
+        [Parameter(ValueFromPipeline = $True)] 
+        [String]$SMTPServer,
+        [Parameter(ValueFromPipeline = $True)]
+        [Net.Mail.MailMessage]$MailMsg
+    )
+    #endregion
+
     Write-Host ('Starting AX autorun process - {0} : {1}' -f $Process, (Get-Date)) -ForegroundColor Black -BackgroundColor White
     $StartTime = Get-Date
 

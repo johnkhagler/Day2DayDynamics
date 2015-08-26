@@ -23,24 +23,27 @@
 #.Parameter VariablePath
 # The file location of a script to default parameters used.
 ###########################################################################################################################################################
-[CmdletBinding()]
-param(
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$ConfigPath,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$Node,
-    [Parameter(ValueFromPipeline = $True)]
-    [Int]$Timeout = 90,
-    [Parameter(ValueFromPipeline = $True)] 
-    [String]$SMTPServer,
-    [Parameter(ValueFromPipeline = $True)]
-    [Net.Mail.MailMessage]$MailMsg,
-    [Parameter(ValueFromPipeline = $True)]
-    [Int]$AXVersion = 6,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$VariablePath = ''
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$ConfigPath,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$Node,
+        [Parameter(ValueFromPipeline = $True)]
+        [Int]$Timeout = 90,
+        [Parameter(ValueFromPipeline = $True)] 
+        [String]$SMTPServer,
+        [Parameter(ValueFromPipeline = $True)]
+        [Net.Mail.MailMessage]$MailMsg,
+        [Parameter(ValueFromPipeline = $True)]
+        [Int]$AXVersion = 6,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$VariablePath = ''
 
-)
+    )
+    #endregion
+
     if ($VariablePath -ne '' -and (Test-Path $VariablePath))
     {
         ."$VariablePath"

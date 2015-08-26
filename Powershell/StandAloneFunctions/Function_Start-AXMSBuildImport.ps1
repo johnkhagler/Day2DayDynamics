@@ -35,38 +35,41 @@
 #.Parameter VariablePath
 # The file location of a script to default parameters used.
 ##############################################################################################################################################################################################################################################
-[CmdletBinding()]
-param(
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$ConfigPath,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$MSBuildPath,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$ImportVSProjectsFile,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$ModelFileFolder,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$Layer,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$LayerCode,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$ModelName,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$BuildLogFolder = $env:TEMP,
-    [Parameter(ValueFromPipeline = $True)]
-    [Switch]$DetailedSummary,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$Verbosity = '',
-    [Parameter(ValueFromPipeline = $True)]
-    [Int]$Timeout = 30,
-    [Parameter(ValueFromPipeline = $True)] 
-    [String]$SMTPServer,
-    [Parameter(ValueFromPipeline = $True)]
-    [Net.Mail.MailMessage]$MailMsg,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$VariablePath = ''
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$ConfigPath,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$MSBuildPath,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$ImportVSProjectsFile,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$ModelFileFolder,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$Layer,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$LayerCode,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$ModelName,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$BuildLogFolder = $env:TEMP,
+        [Parameter(ValueFromPipeline = $True)]
+        [Switch]$DetailedSummary,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$Verbosity = '',
+        [Parameter(ValueFromPipeline = $True)]
+        [Int]$Timeout = 30,
+        [Parameter(ValueFromPipeline = $True)] 
+        [String]$SMTPServer,
+        [Parameter(ValueFromPipeline = $True)]
+        [Net.Mail.MailMessage]$MailMsg,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$VariablePath = ''
 
-)
+    )
+    #endregion
+
     $StartTime = Get-Date
     Write-Host ('Importing Visual Studio Projects : {0}' -f $StartTime) -ForegroundColor Black -BackgroundColor White
 

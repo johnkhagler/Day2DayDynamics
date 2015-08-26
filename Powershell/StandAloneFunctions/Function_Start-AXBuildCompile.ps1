@@ -27,27 +27,30 @@
 #.Parameter VariablePath
 # The file location of a script to default parameters used.
 ######################################################################################################################################################
-[CmdletBinding()]
-param(
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$ConfigPath,
-    [Parameter(ValueFromPipeline = $True)]
-    [Int]$AXVersion = 6,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$LogPath = '',
-    [Parameter(ValueFromPipeline = $True)]
-    [Switch]$NoCleanup,
-    [Parameter(ValueFromPipeline = $True)]
-    [Int]$Workers,
-    [Parameter(ValueFromPipeline = $True)]
-    [Switch]$StopAOS,
-    [Parameter(ValueFromPipeline = $True)] 
-    [String]$SMTPServer,
-    [Parameter(ValueFromPipeline = $True)]
-    [Net.Mail.MailMessage]$MailMsg,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$VariablePath = ''
-)
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$ConfigPath,
+        [Parameter(ValueFromPipeline = $True)]
+        [Int]$AXVersion = 6,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$LogPath = '',
+        [Parameter(ValueFromPipeline = $True)]
+        [Switch]$NoCleanup,
+        [Parameter(ValueFromPipeline = $True)]
+        [Int]$Workers,
+        [Parameter(ValueFromPipeline = $True)]
+        [Switch]$StopAOS,
+        [Parameter(ValueFromPipeline = $True)] 
+        [String]$SMTPServer,
+        [Parameter(ValueFromPipeline = $True)]
+        [Net.Mail.MailMessage]$MailMsg,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$VariablePath = ''
+    )
+    #endregion
+
     $StartTime = Get-Date
     Write-Host ('Starting AXBuild compile. {0} : {1}' -f $ax.AosComputerName, $StartTime) -ForegroundColor Black -BackgroundColor White
 

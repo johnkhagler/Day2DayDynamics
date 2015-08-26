@@ -23,26 +23,29 @@
 #.Parameter VariablePath
 # The file location of a script to default parameters used.
 ###########################################################################################################################################################
-[CmdletBinding()]
-param(
-    [String]$ServerInstance = 'localhost',
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$AXDBName,
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$BackupFilePath,
-    [String]$AdditionalSQLRestore = "WITH FILE = 1, NOUNLOAD, REPLACE, STATS = 5",
-    [Parameter(ValueFromPipeline = $True)]
-    [Int]$Timeout = 600,
-    [Parameter(ValueFromPipeline = $True)] 
-    [String]$SMTPServer,
-    [Parameter(ValueFromPipeline = $True)]
-    [Net.Mail.MailMessage]$MailMsg,
-    [String]$VariablePath = ''
-)
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [String]$ServerInstance = 'localhost',
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$AXDBName,
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$BackupFilePath,
+        [String]$AdditionalSQLRestore = "WITH FILE = 1, NOUNLOAD, REPLACE, STATS = 5",
+        [Parameter(ValueFromPipeline = $True)]
+        [Int]$Timeout = 600,
+        [Parameter(ValueFromPipeline = $True)] 
+        [String]$SMTPServer,
+        [Parameter(ValueFromPipeline = $True)]
+        [Net.Mail.MailMessage]$MailMsg,
+        [String]$VariablePath = ''
+    )
+    #endregion
+
     $StartTime = Get-Date
     Write-Host ('Starting database restore - {0} : {1}' -f $AXDBName, $StartTime) -ForegroundColor Black -BackgroundColor White
     

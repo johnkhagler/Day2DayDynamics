@@ -15,17 +15,19 @@
 #.Parameter -$Command
 #  Tells AX what autorun command to use.
 ###########################################################################################################################################################
-[CmdletBinding()]
-param(
-    [Parameter(ValueFromPipeline = $True)]
-    [Switch]$ExitWhenDone,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$LogFile,
-    [Parameter(ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$Command
-)
-   
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline = $True)]
+        [Switch]$ExitWhenDone,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$LogFile,
+        [Parameter(ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$Command
+    )
+    #endregion
+
     $XMLHeader = '<?xml version="1.0" encoding="utf-8"?>'
     $AutoRunHeader = '<AxaptaAutoRun version="4.0"{0}>'
     $AutoRunCommand = '<{0} />' -f $Command

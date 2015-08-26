@@ -21,27 +21,30 @@
 #.Parameter SubFolderPatterns
 #  The patterns to identify the folders to delete from. Required for the Drilldown parameter
 ###########################################################################################################################################################
-[CmdletBinding()]
-param(
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline=$True)]
-    [ValidateNotNullOrEmpty()]
-    [String[]]$FolderPaths,
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$FolderPatterns,
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String[]]$FilePatterns,
-    [Parameter(ValueFromPipeline=$True)]
-    [Switch]$Drilldown,
-    [Parameter(ValueFromPipeline=$True)]
-    [String[]]$SubFolderPaths,
-    [Parameter(ValueFromPipeline=$True)]
-    [String[]]$SubFolderPatterns
-)
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline=$True)]
+        [ValidateNotNullOrEmpty()]
+        [String[]]$FolderPaths,
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$FolderPatterns,
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String[]]$FilePatterns,
+        [Parameter(ValueFromPipeline=$True)]
+        [Switch]$Drilldown,
+        [Parameter(ValueFromPipeline=$True)]
+        [String[]]$SubFolderPaths,
+        [Parameter(ValueFromPipeline=$True)]
+        [String[]]$SubFolderPatterns
+    )
+    #endregion
+
     if ($Drilldown)
     {
         if ([String]::IsNullOrWhiteSpace($SubFolderPaths) -or [String]::IsNullOrWhiteSpace($SubFolderPatterns))

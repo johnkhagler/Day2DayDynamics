@@ -15,15 +15,17 @@
 #.Parameter AllUsers
 #  Used to clean the client files for all users.
 ###########################################################################################################################################################
-[CmdletBinding()]
-param(
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$ConfigPath,
-    [Parameter(ValueFromPipeline = $True)]
-    [Switch]$CleanServer,
-    [Parameter(ValueFromPipeline = $True)]
-    [Switch]$AllUsers
-)
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$ConfigPath,
+        [Parameter(ValueFromPipeline = $True)]
+        [Switch]$CleanServer,
+        [Parameter(ValueFromPipeline = $True)]
+        [Switch]$AllUsers
+    )
+    #endregion
 
     [Boolean]$AOSStopped = $False
 
@@ -34,8 +36,6 @@ param(
             throw 'ConfigPath is required for parameter CleanServer'
         }            
     }
-
-    Import-Module DynamicsAXCommunity -DisableNameChecking
 
     if ($CleanServer)
     {

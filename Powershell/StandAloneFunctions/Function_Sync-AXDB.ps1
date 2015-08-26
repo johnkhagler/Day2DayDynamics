@@ -23,24 +23,25 @@
 #.Parameter VariablePath
 # The file location of a script to default parameters used
 ###########################################################################################################################################################
-[CmdletBinding()]
-param(
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$ConfigPath,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$LogFile = (Join-Path $env:TEMP 'DBSync.log'),
-    [Parameter(ValueFromPipeline = $True)]
-    [Int]$Timeout = 120,
-    [Parameter(ValueFromPipeline = $True)] 
-    [String]$SMTPServer,
-    [Parameter(ValueFromPipeline = $True)]
-    [Net.Mail.MailMessage]$MailMsg,
-    [Parameter(ValueFromPipeline = $True)]
-    [Int]$AXVersion = 6,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$VariablePath = ''
-)
-    Import-Module DynamicsAXCommunity -DisableNameChecking
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$ConfigPath,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$LogFile = (Join-Path $env:TEMP 'DBSync.log'),
+        [Parameter(ValueFromPipeline = $True)]
+        [Int]$Timeout = 120,
+        [Parameter(ValueFromPipeline = $True)] 
+        [String]$SMTPServer,
+        [Parameter(ValueFromPipeline = $True)]
+        [Net.Mail.MailMessage]$MailMsg,
+        [Parameter(ValueFromPipeline = $True)]
+        [Int]$AXVersion = 6,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$VariablePath = ''
+    )
+    #endregion
 
     if ($VariablePath -ne '' -and (Test-Path $VariablePath))
     {
