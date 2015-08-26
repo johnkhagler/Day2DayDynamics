@@ -13,17 +13,20 @@
 #.Parameter FilePatterns
 #  The patterns to identify the files to be deleted.
 ###########################################################################################################################################################
-[CmdletBinding()]
-param(
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$FolderPath,    
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String[]]$FilePatterns
-)
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$FolderPath,    
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String[]]$FilePatterns
+    )
+    #endregion
+
     if ([System.IO.Directory]::Exists($FolderPath))
     {
         foreach ($FilePattern in $FilePatterns)

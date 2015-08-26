@@ -21,29 +21,32 @@
 #.Parameter FileLocation
 #  The file location of the file to attach.
 ###########################################################################################################################################################
-[CmdletBinding()]
-param(
-    [Parameter(ValueFromPipeline = $True)] 
-    [String]$SMTPServer,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$From,
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$To,
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$Subject,
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$Body,
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$Priority = 'Normal',
-    [Parameter(ValueFromPipeline = $True)]
-    [String]$FileLocation  = '?'
-)
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [Parameter(ValueFromPipeline = $True)] 
+        [String]$SMTPServer,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$From,
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$To,
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$Subject,
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$Body,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$Priority = 'Normal',
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$FileLocation  = ''
+    )
+    #endregion
+
     #Creating a Mail object
     $Msg = new-object Net.Mail.MailMessage
 
@@ -60,7 +63,7 @@ param(
     try
     {
 		#Attach file
-		if (Test-Path $FileLocation)
+		if ($FileLocation -ne '' -and (Test-Path $FileLocation))
 		{
 			$Attachment = new-object Net.Mail.Attachment($FileLocation)
 			$Msg.Attachments.Add($Attachment)

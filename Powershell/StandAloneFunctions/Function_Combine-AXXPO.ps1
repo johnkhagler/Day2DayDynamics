@@ -29,34 +29,37 @@
 #.Parameter VariablePath
 # The file location of a script to default parameters used.
 ###########################################################################################################################################################
-[CmdletBinding()]
-param(
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$XpoDir,
-    [Parameter(Mandatory=$True,
-    ValueFromPipeline = $True)]
-    [ValidateNotNullOrEmpty()]
-    [String]$CombinedXpoFile,
-    [Parameter(ValueFromPipeline = $True)] 
-    [String]$SpecifiedXpoFile = '',
-    [Parameter(ValueFromPipeline = $True)] 
-    [String]$NoDel = '',
-    [Parameter(ValueFromPipeline = $True)] 
-    [Switch]$utf8,
-    [Parameter(ValueFromPipeline = $True)] 
-    [Int]$Threads = 0,
-    [Parameter(ValueFromPipeline = $True)] 
-    [String]$ExclusionsFile = '',
-    [Parameter(ValueFromPipeline = $True)] 
-    [Switch]$ViewsOnlyOnce,
-    [Parameter(ValueFromPipeline = $True)] 
-    [String]$SMTPServer,
-    [Parameter(ValueFromPipeline = $True)]
-    [Net.Mail.MailMessage]$MailMsg,
-    [String]$VariablePath = ''
-)
+    #region Parameters
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$XpoDir,
+        [Parameter(Mandatory=$True,
+        ValueFromPipeline = $True)]
+        [ValidateNotNullOrEmpty()]
+        [String]$CombinedXpoFile,
+        [Parameter(ValueFromPipeline = $True)] 
+        [String]$SpecifiedXpoFile = '',
+        [Parameter(ValueFromPipeline = $True)] 
+        [String]$NoDel = '',
+        [Parameter(ValueFromPipeline = $True)] 
+        [Switch]$utf8,
+        [Parameter(ValueFromPipeline = $True)] 
+        [Int]$Threads = 0,
+        [Parameter(ValueFromPipeline = $True)] 
+        [String]$ExclusionsFile = '',
+        [Parameter(ValueFromPipeline = $True)] 
+        [Switch]$ViewsOnlyOnce,
+        [Parameter(ValueFromPipeline = $True)] 
+        [String]$SMTPServer,
+        [Parameter(ValueFromPipeline = $True)]
+        [Net.Mail.MailMessage]$MailMsg,
+        [String]$VariablePath = ''
+    )
+    #endregion
+
     $StartTime = Get-Date
     Write-Host ('Generating the XPO file {0} : {1}' -f $CombinedXpoFile, $StartTime) -ForegroundColor Black -BackgroundColor White
     
