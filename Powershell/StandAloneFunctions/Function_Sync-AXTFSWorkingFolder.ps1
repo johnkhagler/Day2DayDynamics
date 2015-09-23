@@ -1,11 +1,11 @@
 ﻿function Sync-AXTFSWorkingFolder{
 ################################################################################################################################################################################
 #.Synopsis
-#  Creates an AX .xpo file containing all tfs items for a specific version
+#  Syncs a TFS working folder with a specific label version of code.
 #.Description
-#  Creates an AX .xpo file containing all tfs items for a specific version
+#  Syncs a TFS working folder with a specific label version of code.
 #.Example
-#  Get-AXTFSCombinedXpo -WorkingFolder 'C:\TFS\AX2012\D2D_AX_REL'
+#  Sync-AXTFSWorkingFolder
 #.Parameter WorkingFolder
 #  The TFS working folder to sync.
 #.Parameter Label
@@ -14,6 +14,8 @@
 #  This parameter allows you to set a label that doesn't already exist on the current version.
 #.Parameter LabelScope
 #  This variable allows you to set scope for the label.
+#.Parameter Comment
+#  This variable allows you to set a label comment.
 #.Parameter VariablePath
 # The file location of a script to default parameters used.
 ################################################################################################################################################################################
@@ -24,6 +26,7 @@
         [String]$Label = '',
         [Switch]$SetLabel,
         [String]$LabelScope = '',
+		[String]$Comment = '',
         [String]$VariablePath = ''
     )
     #endregion
