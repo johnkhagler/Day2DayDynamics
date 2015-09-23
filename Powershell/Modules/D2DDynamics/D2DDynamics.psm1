@@ -1348,9 +1348,6 @@ function Import-AXVSProject{
 		Write-Error -ErrorRecord $_
 	}
 }
-#endregion
-
-#region HiddenFunctions
 function Send-EMail{
 ###########################################################################################################################################################
 #.Synopsis
@@ -1431,6 +1428,9 @@ function Send-EMail{
         Write-Host ('Error sending email : {0}' -f $Error.ToString()) -ForegroundColor Red -BackgroundColor White
     }
 }
+#endregion
+
+#region HiddenFunctions
 function Clean-Folder{
 ###########################################################################################################################################################
 #.Synopsis
