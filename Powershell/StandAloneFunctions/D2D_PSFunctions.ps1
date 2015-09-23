@@ -51,3 +51,6 @@
 
 #  Import-AXVSProject -ConfigPath 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc' -$VSProject 'C:\Test\VSProject.dwproj' -LogFile 'C:\TestLog.log' -Timeout 5
 ."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Import-AXVSProject.ps1"
+
+#  Build-AXModel '1.0.0.1' -VariablePath 'C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Build-AXModel_Variables.ps1'
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Build-AXModel.ps1"
