@@ -83,7 +83,7 @@ $ModelFileExports.Add($D2DModelFileExport)
 [Int]$ImportVSBuildTimeout = 60
 [Int]$CompileCILTimeout = 90
 [Int]$DBSyncTimeout = 90
-[Int]$DBRestoreTimeout = 600 #currently in seconds.  Function needs to be changed to make uniform.
+[Int]$DBRestoreTimeout = 10
 
 #Database restore variables
 [String]$DataDatabase = 'D2D_AX_BLD'
