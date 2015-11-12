@@ -37,7 +37,7 @@
         [String]$BackupFilePath,
         [String]$AdditionalSQLRestore = "WITH FILE = 1, NOUNLOAD, REPLACE, STATS = 5",
         [Parameter(ValueFromPipeline = $True)]
-        [Int]$Timeout = 600,
+        [Int]$Timeout = 10,
         [Parameter(ValueFromPipeline = $True)] 
         [String]$SMTPServer,
         [Parameter(ValueFromPipeline = $True)]
@@ -60,6 +60,8 @@
                               "RESTORE DATABASE [$AXDBName] " +
                               "FROM DISK = N'$BackupFilePath' " + 
                               $AdditionalSQLRestore
+
+        $Timeout = ($Timeout * 60) #minutes to seconds
 
         Invoke-Sqlcmd -QueryTimeout $Timeout -ServerInstance $ServerInstance -Query $dbCommand -ErrorAction Stop
 

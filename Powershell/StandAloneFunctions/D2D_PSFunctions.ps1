@@ -54,3 +54,6 @@
 
 #  Build-AXModel '1.0.0.1' -VariablePath 'C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Build-AXModel_Variables.ps1'
 ."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Build-AXModel.ps1"
+
+#  Refresh-AXAifHttpPort -ConfigPath 'C:\Powershell\Compile\D2D_AX_DEV1_VAR.axc' -PortName 'D2DHttpServices' -ServiceClass 'D2DOrderService' -DisabledFields '/D2DOrder/Order/TestField,/D2DOrder/Order/OrderLine/TestField'
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Refresh-AXAifHttpPort.ps1"
