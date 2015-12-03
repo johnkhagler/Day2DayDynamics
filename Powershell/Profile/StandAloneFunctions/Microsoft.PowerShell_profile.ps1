@@ -13,3 +13,4 @@ Pop-Location
 
 #Team Foundation Server References
 $env:path += ";C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\" #TF.exe
+Add-PSSnapin Microsoft.TeamFoundation.PowerShell #TFS 2012 Power Tools
