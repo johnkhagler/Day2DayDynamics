@@ -57,3 +57,6 @@
 
 #  Refresh-AXAifHttpPort -ConfigPath 'C:\Powershell\Compile\D2D_AX_DEV1_VAR.axc' -PortName 'D2DHttpServices' -ServiceClass 'D2DOrderService' -DisabledFields '/D2DOrder/Order/TestField,/D2DOrder/Order/OrderLine/TestField'
 ."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Refresh-AXAifHttpPort.ps1"
+
+#  Get-AXTFSCombinedXpo -Version 'C2500' -OutputFile 'C:\D2DModel_Hotfix.xpo' -VariablePath 'C:\Powershell\D2D_PSFunctionVariables.ps1'
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Get-AXTFSCombinedXPO.ps1"

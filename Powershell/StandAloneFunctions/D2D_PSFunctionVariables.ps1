@@ -1,6 +1,10 @@
 ﻿#AX Client Configuration File
 $ConfigPath = 'C:\Powershell\Compile\D2D_AX2012_DEV1_VAR.axc'
 
+#TFS Variables
+$TFSCollectionUrl = 'http://TFS-01:8080/tfs'
+$TFSLocation = '$/AX2012/D2D_AX_DEV/D2DModel'
+
 #Email Variables
 $SMTPServer = 'smtp.d2ddynamics.com'
 $MailMsg = New-Object Net.Mail.MailMessage
