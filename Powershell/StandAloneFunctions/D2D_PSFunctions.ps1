@@ -60,3 +60,6 @@
 
 #  Get-AXTFSCombinedXpo -Version 'C2500' -OutputFile 'C:\D2DModel_Hotfix.xpo' -VariablePath 'C:\Powershell\D2D_PSFunctionVariables.ps1'
 ."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Get-AXTFSCombinedXPO.ps1"
+
+#  Clean-AXModel -ConfigPath 'C:\Powershell\Compile\D2D_AX_DEV1_VAR.axc' -Model 'USR Model' -Layer 'usr' -NoInstallMode
+."C:\VisualStudioOnline\Workspaces\CodePlex\Day2DayDynamics\Powershell\StandAloneFunctions\Function_Clean-AXModel.ps1"
