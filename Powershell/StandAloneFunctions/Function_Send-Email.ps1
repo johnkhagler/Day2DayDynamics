@@ -31,7 +31,7 @@
         [Parameter(Mandatory=$True,
         ValueFromPipeline = $True)]
         [ValidateNotNullOrEmpty()]
-        [String]$To,
+        [System.Net.Mail.MailAddressCollection]$To,
         [Parameter(Mandatory=$True,
         ValueFromPipeline = $True)]
         [ValidateNotNullOrEmpty()]
@@ -55,7 +55,12 @@
 
     #Email structure 
     $Msg.From = $From
-    $Msg.To.Add($To)
+
+    ForEach ($Email in $To)
+    {
+        $Msg.To.Add($Email.Address)
+    }
+
     $Msg.subject = $Subject
     $Msg.body = $Body
     $Msg.Priority = $Priority
