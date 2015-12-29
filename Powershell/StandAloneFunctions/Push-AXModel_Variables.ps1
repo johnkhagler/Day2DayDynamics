@@ -46,6 +46,10 @@ $TestHttpPort.Add('') #RequiredFields
 $PortsToRefresh = New-Object System.Collections.ArrayList #Array to loop through for port refresh
 $PortsToRefresh.Add($TestHttpPort)
 
+#Build report arrays for looping
+$ReportsToDeploy = New-Object System.Collections.ArrayList #Array to loop through reports
+$ReportsToDeploy.Add('*')
+
 #Timeout variables in minutes
 [Int]$ImportXPOTimeout = 30
 [Int]$CompileCILTimeout = 90
