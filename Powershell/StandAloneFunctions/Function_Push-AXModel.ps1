@@ -156,6 +156,12 @@
             Refresh-AXAifHttpInboundPort -ConfigPath $ConfigPath -LogFile $LogFile -Timeout $AIFPortRefreshTimeout -AIFPort $PortName -ServiceClass $ServiceClass -DisabledOperations $DisabledOperations -DisabledFields $DisabledFields -RequiredFields $RequiredFields -AXVersion $AXVersion -SMTPServer $SMTPServer -MailMsg $MailMsg
         }
 
+        #Deploy SSRS reports
+        foreach ($ReportToDeploy in  $ReportsToDeploy)
+        {
+            Publish-AXReport -ServicesFilePath $ConfigPath -ReportName $ReportToDeploy
+        }
+
         #Bounce the AOS
         Restart-AXAOS -ConfigPath $ConfigPath
         
