@@ -95,9 +95,8 @@
 
     #Step 7: Generate the combined xpo files
     $BuildFiles = New-Object System.Collections.ArrayList
-    $ImportFile = New-Object System.Collections.ArrayList
-
-    foreach($XPOImport in $XPOImports)
+    
+	foreach($XPOImport in $XPOImports)
     {
         
         [String]$Config = $XPOImport[0]
@@ -109,7 +108,7 @@
         $BuildFile = Join-Path $BuildSetupFolder ($ModelBuildFile)
         Combine-AXXPO -XpoDir $ModelFileFolder -CombinedXpoFile $BuildFile -SMTPServer $SMTPServer -MailMsg $MailMsg
 
-        $ImportFile.Clear()
+        $ImportFile = New-Object System.Collections.ArrayList
         $ImportFile.Add($Config)
         $ImportFile.Add($ModelName)
         $ImportFile.Add($BuildFile)

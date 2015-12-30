@@ -92,8 +92,8 @@ $ModelFileExports.Add($D2DModelFileExport)
 [String]$ModelBUFilePath = 'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Backup\D2D_AX_BLD_model\D2D_AX_BLD_model_CU7_NoVAR.bak'
 
 #Misc variables
-[String]$ExchangeRateProviderOanda = 'Classes\ExchangeRateProviderOanda'
-[String[]]$NodesToClientCompile = @($ExchangeRateProviderOanda)
+$NodesToClientCompile = New-Object System.Collections.ArrayList #Array to loop through nodes to compile
+$NodesToClientCompile.Add('Classes\ExchangeRateProviderOanda')
 
 #Email variables
 $SMTPServer = 'smtp.day2daydynamics.com'

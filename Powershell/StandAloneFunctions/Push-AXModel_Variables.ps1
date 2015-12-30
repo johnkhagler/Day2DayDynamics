@@ -59,9 +59,8 @@ $ReportsToDeploy.Add('*')
 [Int]$AIFPortRefreshTimeout = 20
 
 #Misc variables
-[String]$ExchangeRateProviderOanda = 'Classes\ExchangeRateProviderOanda'
-[String[]]$NodesToClientCompile = @($ExchangeRateProviderOanda)
-
+$NodesToClientCompile = New-Object System.Collections.ArrayList #Array to loop through nodes to compile
+$NodesToClientCompile.Add('Classes\ExchangeRateProviderOanda')
 #Email variables
 $SMTPServer = 'smtp.day2daydynamics.com'
 $MailMsg = New-Object Net.Mail.MailMessage
