@@ -1,8 +1,9 @@
 ﻿#Config files
 [String]$ConfigPath = 'C:\Powershell\Compile\D2D_AX_TST_VAR.axc'
-[String]$USRConfig = 'C:\Powershell\Compile\D2D_AX_TST_USR.axc'
-[String]$CUSConfig = 'C:\Powershell\Compile\D2D_AX_TST_CUS.axc'
-[String]$VARConfig = 'C:\Powershell\Compile\D2D_AX_TST_VAR.axc'
+#Extra layer configs would only be necessary if using an array to loop through multiple model imports in different layers, and only for hotfixes
+#[String]$USRConfig = 'C:\Powershell\Compile\D2D_AX_TST_USR.axc'
+#[String]$CUSConfig = 'C:\Powershell\Compile\D2D_AX_TST_CUS.axc'
+#[String]$VARConfig = 'C:\Powershell\Compile\D2D_AX_TST_VAR.axc'
 
 #AX layer variables
 [String]$USRLayerName = "usr"
