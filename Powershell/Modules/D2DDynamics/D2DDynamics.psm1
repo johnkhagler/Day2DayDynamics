@@ -1501,14 +1501,14 @@ function Refresh-AXServices{
 		Write-Error -ErrorRecord $_
 	}
 }
-function Refresh-AXAifHttpInboundPort{
+function Refresh-AXAifPort{
 ########################################################################################################################################################################################################################
 #.Synopsis
-#  Refreshes an AIF inbound HTTP port in a specific AX environment.
+#  Refreshes an AIF port in a specific AX environment.
 #.Description
-#  Refreshes an AIF inbound HTTP port in a specific AX environment.
+#  Refreshes an AIF port in a specific AX environment.
 #.Example
-#  Refresh-AXAifHttpPort -ConfigPath 'C:\Powershell\Compile\D2D_AX_DEV1_VAR.axc' -PortName 'D2DHttpServices' -ServiceClass 'D2DOrderService' -DisabledFields '/D2DOrder/Order/TestField,/D2DOrder/Order/OrderLine/TestField'
+#  Refresh-AXAifPort -ConfigPath 'C:\Powershell\Compile\D2D_AX_DEV1_VAR.axc' -PortName 'D2DHttpServices' -ServiceClass 'D2DOrderService' -DisabledFields '/D2DOrder/Order/TestField,/D2DOrder/Order/OrderLine/TestField'
 #.Parameter ConfigPath
 #  The configuration file for the AX instance.
 #.Parameter LogFile
@@ -1573,13 +1573,13 @@ function Refresh-AXAifHttpInboundPort{
     {  
         $ax = Get-AXConfig -ConfigPath $ConfigPath -AxVersion 6 -IncludeServer
 
-        $Command = 'Run type="class" name="D2DAutoRunHelper" method="AifHttpInboundPortRefresh" parameters="&quot;{0}&quot;,&quot;{1}&quot;,&quot;{2}&quot;,&quot;{3}&quot;,&quot;{4}&quot;"' -f $AIFPort, $ServiceClass, $DisabledOperations, $DisabledFields, $RequiredFields
+        $Command = 'Run type="class" name="D2DAutoRunHelper" method="AifPortRefresh" parameters="&quot;{0}&quot;,&quot;{1}&quot;,&quot;{2}&quot;,&quot;{3}&quot;,&quot;{4}&quot;"' -f $AIFPort, $ServiceClass, $DisabledOperations, $DisabledFields, $RequiredFields
         $XML = Get-AXAutoRunXML -Command $Command -ExitWhenDone -LogFile $LogFile
 
-        $XMLFile = Join-Path $env:TEMP ('{0}.xml' -f ($ax.AosComputerName + '_AifHttpPortAutoRun'))           
+        $XMLFile = Join-Path $env:TEMP ('{0}.xml' -f ($ax.AosComputerName + '_AifPortAutoRun'))           
         New-Item $XmlFile -type file -force -value $XML
 
-        Start-AXAutoRun -Ax $ax -XMLFile $XMLFile -LogFile $LogFile -Process 'D2DAutoRunHelper::AifHttpInboundPortRefresh' -Timeout $Timeout -SMTPServer $SMTPServer -MailMsg $MailMsg
+        Start-AXAutoRun -Ax $ax -XMLFile $XMLFile -LogFile $LogFile -Process 'D2DAutoRunHelper::AifPortRefresh' -Timeout $Timeout -SMTPServer $SMTPServer -MailMsg $MailMsg
     }
     catch 
 	{

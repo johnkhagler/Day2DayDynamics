@@ -19,18 +19,17 @@ Formatversion: 1
         #{
         #}
       ENDSOURCE
-      SOURCE #AifHttpInboundPortRefresh
-        #public static void AifHttpInboundPortRefresh(str _portName, str _serviceClass, str _disabledOperationList, str _disabledFieldList, str _requiredFieldList)
+      SOURCE #AifPortRefresh
+        #public static void AifPortRefresh(str _portName, str _serviceClass = '', str _disabledOperationList = '', str _disabledFieldList = '', str _requiredFieldList = '')
         #{
         #    AifPort             aifPort = aifPort::find(_portName);
         #    AifAction           aifAction;
         #    AifPortActionPolicy aifPortActionPolicy;
-        #    AifChannel          aifChannel;
-        #    AifAdapter          aifAdapter;
-        #    int                 serviceClassId, i;
-        #    AifPortDocument     aifDocument;
+        #    int                 serviceClassId, documentClassId, i;
+        #    AxdWizardParameters params;
+        #    AifPortDocument     aifPortDocument;
         #    AifDocumentField    aifDocumentField;
-        #    AifDataPolicy       aifPolicy;
+        #    AifDataPolicy       aifDataPolicy;
         #    AifXPath            xPath;
         #    container           disabledOperationList = (_disabledOperationList == '' ? conNull() : str2con(_disabledOperationList, ','));
         #    container           disabledFieldList = (_disabledFieldList == '' ? conNull() : str2con(_disabledFieldList, ','));
@@ -38,74 +37,77 @@ Formatversion: 1
         #
         #    if (aifPort)
         #    {
-        #        select firstonly RecId from aifAdapter
-        #            exists join aifChannel
-        #                where aifChannel.AdapterClassId == aifAdapter.AdapterClassId
-        #                   && aifChannel.ChannelId == aifPort.ChannelId
-        #                   && aifAdapter.Name == 'HTTP';
+        #        AifPortManager::undeployPort(aifPort.Name);
         #
-        #        if (aifAdapter)
+        #        if (_serviceClass != '')
         #        {
         #            serviceClassId = className2Id(_serviceClass);
         #
         #            if (serviceClassId)
         #            {
-        #                select aifDocument
-        #                    where aifDocument.Port == aifPort.RecId
-        #                        && aifDocument.DocumentClassId == serviceClassId;
+        #                delete_from aifPortActionPolicy
+        #                    exists join aifAction
+        #                    where aifAction.ActionId == aifPortActionPolicy.ActionId
+        #                       && aifAction.ClassId == serviceClassId
+        #                       && aifPortActionPolicy.Port == aifPort.RecId;
         #
-        #                if (aifDocument)
+        #                while select ActionId, MethodName from aifAction
+        #                    where aifAction.ClassId == serviceClassId
         #                {
-        #                    AifPortManager::undeployPort(aifPort.Name);
-        #
-        #                    delete_from aifPortActionPolicy
-        #                        exists join aifAction
-        #                        where aifAction.ClassId == serviceClassId
-        #                           && aifPortActionPolicy.Port == aifPort.RecId;
-        #
-        #                    while select ActionId, MethodName from aifAction
-        #                        where aifAction.ClassId == serviceClassId
+        #                    if (!conFind(disabledOperationList, aifAction.MethodName))
         #                    {
-        #                        if (!conFind(disabledOperationList, aifAction.MethodName))
-        #                        {
-        #                            aifPortActionPolicy.clear();
+        #                        aifPortActionPolicy.clear();
         #
-        #                            aifPortActionPolicy.ActionId = aifAction.ActionId;
-        #                            aifPortActionPolicy.Port = aifPort.RecId;
-        #                            aifPortActionPolicy.insert();
-        #                        }
+        #                        aifPortActionPolicy.ActionId = aifAction.ActionId;
+        #                        aifPortActionPolicy.Port = aifPort.RecId;
+        #                        aifPortActionPolicy.insert();
+        #                    }
+        #                }
+        #
+        #                if (AifUtil::isDocumentService(_serviceClass))
+        #                {
+        #                    params = AifServiceClassGenerator::getServiceParameters(_serviceClass);
+        #
+        #                    if ((params != null) && (params.parmAifEntityClassName() != ''))
+        #                    {
+        #                        documentClassId = className2Id(params.parmAifEntityClassName());
         #                    }
         #
-        #                    ttsBegin;
-        #                    update_recordset aifPolicy
-        #                        setting IsEnabled = true
-        #                        where aifPolicy.PortDocument == aifDocument.RecId;
+        #                    aifPortDocument = AifPortDocument::findByPortId(aifPort.RecId, documentClassId);
+        #                    aifDataPolicy::synchronize(_portName, documentClassId);
         #
-        #                    update_recordset aifPolicy
+        #                    ttsBegin;
+        #                    update_recordset aifDataPolicy
+        #                        setting IsEnabled = true
+        #                        where aifDataPolicy.PortDocument == aifPortDocument.RecId;
+        #
+        #                    update_recordset aifDataPolicy
         #                        setting IsRequired = false
-        #                        where aifPolicy.PortDocument == aifDocument.RecId
+        #                        where aifDataPolicy.PortDocument == aifPortDocument.RecId
         #                        exists join aifDocumentField
-        #                        where aifDocumentField.RecId == aifPolicy.DocumentFieldRecId
+        #                        where aifDocumentField.RecId == aifDataPolicy.DocumentFieldRecId
         #                           && aifDocumentField.MinOccurs == 0;
+        #                    ttsCommit;
         #
         #                    for (i=1; i<=conLen(disabledFieldList); i++)
         #                    {
         #                        aifDocumentField.clear();
-        #                        aifPolicy.clear();
+        #                        aifDataPolicy.clear();
         #
         #                        xPath = conPeek(disabledFieldList, i);
-        #                        aifDocumentField = AifDocumentField::find(aifDocument.DocumentClassId, xPath);
+        #                        aifDocumentField = AifDocumentField::find(aifPortDocument.DocumentClassId, xPath);
         #
-        #                        select forupdate aifPolicy
-        #                            where aifPolicy.PortDocument == aifDocument.RecId
-        #                               && aifPolicy.DocumentFieldRecId == aifDocumentField.RecId;
+        #                        ttsBegin;
+        #                        select forupdate aifDataPolicy
+        #                            where aifDataPolicy.PortDocument == aifPortDocument.RecId
+        #                               && aifDataPolicy.DocumentFieldRecId == aifDocumentField.RecId;
         #
-        #                        if (aifPolicy)
+        #                        if (aifDataPolicy)
         #                        {
-        #                            if (!aifPolicy.IsRequired)
+        #                            if (!aifDataPolicy.IsRequired)
         #                            {
-        #                                aifPolicy.IsEnabled = false;
-        #                                aifPolicy.update();
+        #                                aifDataPolicy.IsEnabled = false;
+        #                                aifDataPolicy.update();
         #                            }
         #                            else
         #                            {
@@ -116,26 +118,28 @@ Formatversion: 1
         #                        {
         #                            warning(strFmt("Unable to find the %1 field for disabling.", xPath));
         #                        }
+        #                        ttsCommit;
         #                    }
         #
         #                    for (i=1; i<=conLen(requiredFieldList); i++)
         #                    {
         #                        aifDocumentField.clear();
-        #                        aifPolicy.clear();
+        #                        aifDataPolicy.clear();
         #
         #                        xPath = conPeek(requiredFieldList, i);
-        #                        aifDocumentField = AifDocumentField::find(aifDocument.DocumentClassId, xPath);
+        #                        aifDocumentField = AifDocumentField::find(aifPortDocument.DocumentClassId, xPath);
         #
-        #                        select forupdate aifPolicy
-        #                            where aifPolicy.PortDocument == aifDocument.RecId
-        #                               && aifPolicy.DocumentFieldRecId == aifDocumentField.RecId;
+        #                        ttsBegin;
+        #                        select forupdate aifDataPolicy
+        #                            where aifDataPolicy.PortDocument == aifPortDocument.RecId
+        #                               && aifDataPolicy.DocumentFieldRecId == aifDocumentField.RecId;
         #
-        #                        if (aifPolicy)
+        #                        if (aifDataPolicy)
         #                        {
-        #                            if (aifPolicy.IsEnabled)
+        #                            if (aifDataPolicy.IsEnabled)
         #                            {
-        #                                aifPolicy.IsRequired = true;
-        #                                aifPolicy.update();
+        #                                aifDataPolicy.IsRequired = true;
+        #                                aifDataPolicy.update();
         #                            }
         #                            else
         #                            {
@@ -146,20 +150,14 @@ Formatversion: 1
         #                        {
         #                            warning(strFmt("Unable to find the %1 field for requiring.", xPath));
         #                        }
+        #                        ttsCommit;
         #                    }
         #
-        #                    aifDocument.selectForUpdate(true);
-        #                    aifDocument.IsDataPolicySynchronized = false;
-        #                    aifDocument.update();
+        #                    ttsBegin;
+        #                    aifPortDocument.selectForUpdate(true);
+        #                    aifPortDocument.IsDataPolicySynchronized = false;
+        #                    aifPortDocument.update();
         #                    ttsCommit;
-        #
-        #                    AifPortManager::deployPort(aifPort.Name);
-        #
-        #                    info(strFmt("Refresh AIF Port %1.", _portName));
-        #                }
-        #                else
-        #                {
-        #                    warning(strFmt("Unable to find the %1 service class in the %2 port.", _serviceClass, _portName));
         #                }
         #            }
         #            else
@@ -167,10 +165,10 @@ Formatversion: 1
         #                warning(strFmt("Unable to find the %1 service class.", _serviceClass));
         #            }
         #        }
-        #        else
-        #        {
-        #            warning(strFmt("AIF Port %1 is not adaper type HTTP", _portName));
-        #        }
+        #
+        #        AifPortManager::deployPort(aifPort.Name);
+        #
+        #        info(strFmt("Refresh AIF Port %1.", _portName));
         #    }
         #    else
         #    {
