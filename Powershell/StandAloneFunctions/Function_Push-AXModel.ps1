@@ -153,7 +153,7 @@
             [String]$RequiredFields = $PortToRefresh[4]
 
             $LogFile = Join-Path $env:TEMP ('{0}_Refresh.log' -f $PortName)
-            Refresh-AXAifHttpInboundPort -ConfigPath $ConfigPath -LogFile $LogFile -Timeout $AIFPortRefreshTimeout -AIFPort $PortName -ServiceClass $ServiceClass -DisabledOperations $DisabledOperations -DisabledFields $DisabledFields -RequiredFields $RequiredFields -AXVersion $AXVersion -SMTPServer $SMTPServer -MailMsg $MailMsg
+            Refresh-AXAifPort -ConfigPath $ConfigPath -LogFile $LogFile -Timeout $AIFPortRefreshTimeout -AIFPort $PortName -ServiceClass $ServiceClass -DisabledOperations $DisabledOperations -DisabledFields $DisabledFields -RequiredFields $RequiredFields -AXVersion $AXVersion -SMTPServer $SMTPServer -MailMsg $MailMsg
         }
 
         #Deploy SSRS reports
