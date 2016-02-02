@@ -12,7 +12,7 @@
 ModuleToProcess = 'D2DDynamics.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.5'
+ModuleVersion = '1.0.6'
 
 # ID used to uniquely identify this module
 GUID = 'e2855bed-b57f-401e-aeb8-dc34639c60ae'
@@ -67,7 +67,7 @@ PowerShellVersion = '2.0'
 
 # Functions to export from this module
 #FunctionsToExport = '*-AX*'
-FunctionsToExport = @('Get-AXAutoRunXML', 'Start-AXAutoRun', 'Start-AXBuildCompile', 'Compile-AXCIL', 'Sync-AXDB', 'Compile-AXAOT', 'Clean-AXArtifacts', 'Import-AXXPO', 'Import-AXLabelFile', 'Sync-AXTFSWorkingFolder', 'Restore-AXDatabase', 'Combine-AXXPO', 'Start-AXMSBuildImport', 'Compile-AXXppNode', 'Import-AXVSProject', 'Send-Email', 'Refresh-AXServices', 'Refresh-AXAifHttpInboundPort', 'Get-AXTFSCombinedXPO', 'Clean-AXModel')
+FunctionsToExport = @('Get-AXAutoRunXML', 'Start-AXAutoRun', 'Start-AXBuildCompile', 'Compile-AXCIL', 'Sync-AXDB', 'Compile-AXAOT', 'Clean-AXArtifacts', 'Import-AXXPO', 'Import-AXLabelFile', 'Sync-AXTFSWorkingFolder', 'Restore-AXDatabase', 'Combine-AXXPO', 'Start-AXMSBuildImport', 'Compile-AXXppNode', 'Import-AXVSProject', 'Send-Email', 'Refresh-AXServices', 'Refresh-AXAifPort', 'Get-AXTFSCombinedXPO', 'Clean-AXModel')
 
 # Cmdlets to export from this module
 #CmdletsToExport = '*'
