@@ -1285,6 +1285,8 @@ function Import-AXVSProject{
 #  The path to the log file.
 #.Parameter Timeout
 #  The amount of time in minutes before the process times out.
+#.Parameter Model
+#  The Model to work in, in AX.
 #.Parameter SMTPServer
 #  The SMTP server used to send the email.
 #.Parameter MailMsg
@@ -1305,6 +1307,8 @@ function Import-AXVSProject{
         [String]$LogFile,
         [Parameter(ValueFromPipeline = $True)]
         [Int]$Timeout = 10,
+        [Parameter(ValueFromPipeline = $True)]
+        [String]$Model,
         [Parameter(ValueFromPipeline = $True)] 
         [String]$SMTPServer,
         [Parameter(ValueFromPipeline = $True)]
@@ -1343,7 +1347,7 @@ function Import-AXVSProject{
         New-Item $XmlFile -type file -force -value $XML
 
         $Process = 'VS project import: {0}' -f $ProjectName
-        Start-AXAutoRun -Ax $Ax -XMLFile $XMLFile -LogFile $LogFile -Process $Process -Timeout $Timeout -SMTPServer $SMTPServer -MailMsg $MailMsg
+        Start-AXAutoRun -Ax $Ax -XMLFile $XMLFile -LogFile $LogFile -Process $Process -Timeout $Timeout -SMTPServer $SMTPServer -MailMsg $MailMsg -Model $Model
     }
     catch 
 	{
